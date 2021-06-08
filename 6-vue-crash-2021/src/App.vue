@@ -46,58 +46,62 @@ export default {
     toggleAddTask(){
       this.showAddTask = !this.showAddTask
     },
-    addTask(task){
-      this.tasks = [...this.tasks, task]
+    async addTask(task){
+      const res = await fetch('api/tasks', {
+        method: 'POST',
+        headers:{
+          'Content-type': 'application/json',
+        },
+        //JSON.stringify(task) is the data we're sending
+        body: JSON.stringify(task)
+
+      })
+
+      const data = await res.json()
+
+      this.tasks = [...this.tasks, data]
     },
-    deleteTask(id){
-      console.log('task',id);
+    async deleteTask(id){
       if(confirm('Are you sure?')){
+        const res = await fetch(`api/tasks/${id}`,{
+          method: 'DELETE'
+        })
+
+        res.status === 200 ? this.tasks.filter((task) => task.id !== id) : alert('error deleting task')
+
         //this mean filter this tasks array where task's id !== this id:
         this.tasks = this.tasks.filter((task) => task.id !== id)
       }
     },
-    toggleReminder(id){
-      console.log(id)
-      //array.map allows you to manipulate the array and return the array you want:
-              //this means foreach(task)where task.id===id? return this {...} if in not : return this task
-      this.tasks = this.tasks.map((task) => task.id === id? {...task, reminder: !task.reminder} : task);
-      /*
-      WTF is {...task, reminder: !task.reminder} ??????????
-      this called Spread Operator in Javascript!
-      it means, return same object, but change only this property, in our case..
-      so you can do:
-          task = {...task, reminder: !task.reminder}
-      This means return task object but change reminder to !task.reminder
-
-
-      you can also use it in another way if you have an array and you want to add a new element in the array: 
-          tasks = {...tasks, task} 
-      this means append task object to tasks array of object, we already used that in the addTask() function
-
-      */
-    }
+    async toggleReminder(id){
+        const taskToToggle = await this.fetchTask(id)
+        const updTask = { ...taskToToggle, reminder: !taskToToggle.reminder }
+        const res = await fetch(`api/tasks/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify(updTask),
+        })
+        const data = await res.json()
+        this.tasks = this.tasks.map((task) =>
+          task.id === id ? { ...task, reminder: data.reminder } : task)
+    },
+    async fetchTasks(){
+    const res = await fetch('api/tasks')
+    const data = await res.json()
+    return data
+    },
+    //this function should give a single task
+    async fetchTask(id){
+    const res = await fetch(`api/tasks/${id}`)
+    const data = await res.json()
+    return data
+    },
   },
-  created(){
-    this.tasks = [
-      {
-        id: 1,
-        text: 'Doctors Appointment',
-        day: 'March 1st at 2:00pm',
-        reminder: true,
-      },
-      {
-        id: 2,
-        text: 'Meeting at school',
-        day: 'March 3st at 4:00pm',
-        reminder: true,
-      },
-      {
-        id: 3,
-        text: 'Gym session',
-        day: 'March 4st at 12:00pm',
-        reminder: false,
-      },
-    ]
+  //notice the method created is outside the methods:{} object!!
+  async created(){
+     this.tasks = await this.fetchTasks();
   }
 }
 </script>

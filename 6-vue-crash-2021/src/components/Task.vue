@@ -4,7 +4,7 @@
     we want to use this to put a the if else statment so we have to use :class + ifStatement:-->
     <div @click="$emit('toggle-reminder', task.id)" :class="[task.reminder ? 'reminder' : '','task']" > <!-- just like the one line if else of laravel -->
         <h3>
-            {{task.text + ' ' + task.id}}
+            {{task.text}}
             <i @click="onDelete(task.id)" class="fas fa-times"></i>
         </h3>
         <p>{{task.day}}</p>
