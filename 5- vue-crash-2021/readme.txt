@@ -26,5 +26,17 @@
  	- register Header in components object in the app.vue
 	- make Button component and use it in Header component
 	- make the Task component and use it in the app
+	- make AddaTask component 
+	- make many functions that depand on vue events and $emit()
+	- started a live server using this code:
+
+
+- In this lesson, we completed:
+	-Task Adder UI (including all the components)
+	-Functions to show add form + add new task + delete task + toggle reminder, 
+	 .. but all deal only with the ui and the js, not the database or the api
+
+- In lesson 6, we will take this same app and connect it with a fake js api,
+.. and we will deal with it as a real api server (which edit and store values) 
 
 	
