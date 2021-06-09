@@ -63,6 +63,8 @@
 - you can bind a value between app.vue and any views just like with 
   ..the component
 
+- just finished the project :)
+
 
 
 
