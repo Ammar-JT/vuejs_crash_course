@@ -30,7 +30,45 @@
   and go to:
 		http://localhost:5000/tasks <<<<<< hehehehe
 
-- the rest are all logical, any method deal with json file or needs a time to fetch data should have a prefix 'async', and if it's a resonse with 'await'
+- the rest are all logical, any method deal with json file or needs a time
+  ..to fetch data should have a prefix 'async', and if it's a resonse 
+  ..with 'await'. That's how we finished all the CRUDs functions
+
+- routes in vue:
+		npm install vue-router@next
+  @next gives you the latest version of the router,now it again:
+		npm run serve
+
+-----
+
+- now create a folder called router in the src folder, and fill it
+- create a views folder in src, and create About.vue inside it
+- main.js: import the router:
+		import router from './router'
+  .. also in the same page put use(router):
+		createApp(App).use(router).mount('#app')
+
+
+- In the single page apps, you have to have only a single page, so if you
+  .. go from page to page, no refresh should happen ever!
+  .. in our app there is one refresh that we must remove it,
+  .. it's in Footer.vue, replace: 
+		<a href="/about">About</a>
+  with:
+		<router-link to="/about">About</router-link>
+  now it will not refresh the page cuz we used vue router
+
+- we already created About, so let's create Home in the same way
+
+- you can bind a value between app.vue and any views just like with 
+  ..the component
+
+
+
+
+
+
+
 
 
 
